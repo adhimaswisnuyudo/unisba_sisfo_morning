@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:unisba_sisfo/pages/splashscreen.dart';
+import 'package:unisba_sisfo/config/constanta.dart' as cs;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Unisba Sisfo',
+      title: cs.appName,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
