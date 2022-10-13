@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unisba_sisfo/config/constanta.dart' as cs;
+
+import '../handlers/network.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,7 +33,11 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Password are Required")));
     } else {
-      Fluttertoast.showToast(msg: "Login OK");
+      var loginData = FormData.fromMap({
+        'npm': username,
+        'password': password,
+      });
+      var login = DioRequest().login(loginData);
     }
   }
 
