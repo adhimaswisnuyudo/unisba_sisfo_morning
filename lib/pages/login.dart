@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unisba_sisfo/config/constanta.dart' as cs;
 
 class LoginPage extends StatefulWidget {
@@ -7,6 +9,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isObesecurePassword = true;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void setObsecurePassword(bool val) {
+    setState(() {
+      isObesecurePassword = val;
+    });
+  }
+
+  void loginAction() {
+    var username = usernameController.text;
+    var password = passwordController.text;
+    Fluttertoast.showToast(msg: username + " // " + password);
+  }
+
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -62,9 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.bold)),
               ],
             )),
-        SizedBox(height: deviceHeight * 0.2),
+        SizedBox(height: deviceHeight * 0.1),
         Container(
-          padding: EdgeInsets.only(left: 10),
+          padding: EdgeInsets.only(left: 20),
           child: const Text(
             "Login",
             style: TextStyle(
@@ -74,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        SizedBox(height: deviceHeight * 0.02),
+        SizedBox(height: deviceHeight * 0.01),
         Container(
           padding: EdgeInsets.all(10),
           child: Card(
@@ -87,25 +105,68 @@ class _LoginPageState extends State<LoginPage> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[200]!))),
                   child: TextField(
+                    controller: usernameController,
+                    inputFormatters: [LengthLimitingTextInputFormatter(10)],
                     decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person),
                         border: InputBorder.none,
-                        hintText: "Username",
+                        labelText: "Student ID",
+                        floatingLabelAlignment: FloatingLabelAlignment.start,
                         hintStyle: TextStyle(color: Colors.grey)),
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.key),
+                        suffixIcon: isObesecurePassword
+                            ? IconButton(
+                                onPressed: () => setObsecurePassword(false),
+                                icon: Icon(Icons.visibility_off))
+                            : IconButton(
+                                onPressed: () => setObsecurePassword(true),
+                                icon: Icon(Icons.remove_red_eye)),
                         border: InputBorder.none,
-                        hintText: "Password",
+                        labelText: "Password",
                         hintStyle: TextStyle(color: Colors.grey)),
+                    obscureText: isObesecurePassword,
                   ),
                 )
               ],
             ),
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+                onPressed: () => Fluttertoast.showToast(msg: "Forgot Password"),
+                child: const Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ))
+          ],
+        ),
+        Container(
+            padding: EdgeInsets.only(right: 10, left: 10),
+            child: MaterialButton(
+              height: 50.0,
+              minWidth: deviceWidth,
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text(
+                "Login",
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () => {loginAction()},
+              splashColor: Colors.white,
+            )),
       ],
     ));
   }
