@@ -10,6 +10,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isObesecurePassword = true;
+  bool isButtonEnable = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -22,7 +23,33 @@ class _LoginPageState extends State<LoginPage> {
   void loginAction() {
     var username = usernameController.text;
     var password = passwordController.text;
-    Fluttertoast.showToast(msg: username + " // " + password);
+    if (username.isEmpty || username.length < 1) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Student ID are Required")));
+    } else if (password.isEmpty || password.length < 1) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Password are Required")));
+    } else {
+      Fluttertoast.showToast(msg: "Login OK");
+    }
+  }
+
+  void checkIsButtonEnable() {
+    var username = usernameController.text;
+    var password = passwordController.text;
+    if (username.isEmpty || username.length < 1) {
+      setState(() {
+        isButtonEnable = false;
+      });
+    } else if (password.isEmpty || password.length < 1) {
+      setState(() {
+        isButtonEnable = false;
+      });
+    } else {
+      setState(() {
+        isButtonEnable = true;
+      });
+    }
   }
 
   @override
@@ -80,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.bold)),
               ],
             )),
-        SizedBox(height: deviceHeight * 0.1),
+        SizedBox(height: deviceHeight * 0.05),
         Container(
           padding: EdgeInsets.only(left: 20),
           child: const Text(
@@ -105,6 +132,10 @@ class _LoginPageState extends State<LoginPage> {
                       border:
                           Border(bottom: BorderSide(color: Colors.grey[200]!))),
                   child: TextField(
+                    onChanged: (value) {
+                      checkIsButtonEnable();
+                    },
+                    // onEditingComplete: () => checkIsButtonEnable(),
                     controller: usernameController,
                     inputFormatters: [LengthLimitingTextInputFormatter(10)],
                     decoration: InputDecoration(
@@ -118,6 +149,9 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    onChanged: (value) {
+                      checkIsButtonEnable();
+                    },
                     controller: passwordController,
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.key),
@@ -156,15 +190,16 @@ class _LoginPageState extends State<LoginPage> {
         Container(
             padding: EdgeInsets.only(right: 10, left: 10),
             child: MaterialButton(
+              disabledColor: Colors.grey,
               height: 50.0,
               minWidth: deviceWidth,
-              color: Colors.blue,
+              color: isButtonEnable ? Colors.blue : Colors.grey,
               textColor: Colors.white,
               child: Text(
                 "Login",
                 style: TextStyle(fontSize: 18),
               ),
-              onPressed: () => {loginAction()},
+              onPressed: () => {isButtonEnable ? loginAction() : null},
               splashColor: Colors.white,
             )),
       ],
