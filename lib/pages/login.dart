@@ -53,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isLoading = true;
         });
-        dio.options.headers['content-Type'] = 'application/json';
         var response = await dio.post(cs.loginUrl, data: loginData);
         if (response.statusCode == 200) {
           if (response.data['success'] == true) {

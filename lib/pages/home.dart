@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unisba_sisfo/config/constanta.dart' as cs;
 import 'package:unisba_sisfo/menus/main_menu.dart';
-import 'package:unisba_sisfo/menus/persistent_menu.dart';
 
 import '../models/active_user.dart';
 
@@ -18,10 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
   ActiveUser mhs = ActiveUser();
   bool isLoading = true;
 
+  @override
   void initState() {
     getActiveUser();
     super.initState();

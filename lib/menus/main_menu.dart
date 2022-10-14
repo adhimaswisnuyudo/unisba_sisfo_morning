@@ -1,8 +1,6 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:unisba_sisfo/pages/login.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -24,6 +22,7 @@ class _MainMenuState extends State<MainMenu> {
   ]);
 
   late CircularBottomNavigationController _navigationController;
+  @override
   void initState() {
     super.initState();
     _navigationController = CircularBottomNavigationController(selectedPos);
@@ -38,11 +37,6 @@ class _MainMenuState extends State<MainMenu> {
       selectedCallback: (int? selectedPos) {
         setState(() {
           this.selectedPos = selectedPos!;
-          // Navigator.pushReplacement(
-          //     context,
-          //     PageTransition(
-          //         child: const LoginPage(),
-          //         type: PageTransitionType.bottomToTop));
         });
       },
     );
