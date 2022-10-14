@@ -1,8 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unisba_sisfo/config/constanta.dart' as cs;
+import 'package:unisba_sisfo/menus/main_menu.dart';
+import 'package:unisba_sisfo/menus/persistent_menu.dart';
+
+import '../models/active_user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,22 +19,37 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  Widget build(BuildContext context) {
-    SharedPreferences prefs;
-    Future<void> getData() async {
-      prefs = await SharedPreferences.getInstance();
-      var activeUser = prefs.getString(cs.spActiveUser);
-      String user = jsonDecode(activeUser!);
-      print(user);
-    }
+  ActiveUser mhs = ActiveUser();
+  bool isLoading = true;
 
+  void initState() {
+    getActiveUser();
+    super.initState();
+  }
+
+  Future<void> getActiveUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? activeUser = prefs.getString(cs.spActiveUser);
+    setState(() {
+      mhs = ActiveUser.fromJson(jsonDecode(activeUser!));
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Page"),
+        title: Image.asset(cs.mainLogo, height: 50),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications),
+          ),
+        ],
       ),
-      body: const Center(
-        child: Text("Home Page"),
-      ),
+      bottomNavigationBar: MainMenu(),
+      body: const Center(),
     );
   }
 }

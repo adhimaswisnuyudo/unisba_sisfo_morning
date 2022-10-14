@@ -27,29 +27,21 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLogin = prefs.getBool(cs.spIsLogin) ?? false;
     if (isLogin == true) {
-      Timer(
-          const Duration(seconds: 2),
-          () => Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  child: HomePage(), type: PageTransitionType.bottomToTop)));
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: const HomePage(), type: PageTransitionType.bottomToTop));
+      });
     } else {
-      Timer(
-          const Duration(seconds: 2),
-          () => Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  child: LoginPage(), type: PageTransitionType.bottomToTop)));
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: const LoginPage(),
+                type: PageTransitionType.bottomToTop));
+      });
     }
-  }
-
-  void redirectPage() {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              child: const LoginPage(), type: PageTransitionType.bottomToTop));
-    });
   }
 
   @override
