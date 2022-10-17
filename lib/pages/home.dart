@@ -118,14 +118,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: deviceHeight * 0.03),
+                    SizedBox(height: deviceHeight * 0.01),
                     Center(
                       child: CircleAvatar(
                         radius: deviceWidth * 0.15,
                         backgroundImage: NetworkImage(mhs.foto.toString()),
                       ),
                     ),
-                    SizedBox(height: deviceHeight * 0.02),
+                    SizedBox(height: deviceHeight * 0.01),
                     Center(
                       child: Text(
                         mhs.npm.toString(),
