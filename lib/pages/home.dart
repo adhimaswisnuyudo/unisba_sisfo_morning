@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
@@ -58,6 +59,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getActiveUser();
+    getSliders();
     super.initState();
   }
 
@@ -79,6 +81,12 @@ class _HomePageState extends State<HomePage> {
         context,
         PageTransition(
             child: LoginPage(), type: PageTransitionType.bottomToTop));
+  }
+
+  Future<void> getSliders() async {
+    Dio dio = Dio();
+    var response = await dio.get(cs.sliderUrl);
+    print(response.data.length);
   }
 
   @override
@@ -135,16 +143,20 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(height: deviceHeight * 0.02),
+                    SizedBox(height: deviceHeight * 0.01),
                     Center(
+                        child: Container(
+                      padding: EdgeInsets.only(left: 10, right: 10),
                       child: Text(
+                        // overflow: TextOverflow.ellipsis,
                         mhs.nama.toString(),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold),
                       ),
-                    ),
+                    )),
                   ],
                 ),
               ),
@@ -171,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                           ),
                         ),
-                        onPressed: () => {print("See More..")},
+                        onPressed: () => {getSliders()},
                       )))
                 ],
               )

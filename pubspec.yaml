@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.0.15
   circular_bottom_navigation: ^2.2.0
   persistent_bottom_nav_bar: any
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:
