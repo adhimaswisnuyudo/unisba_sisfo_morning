@@ -11,6 +11,7 @@ import 'package:unisba_sisfo/handlers/screen.dart';
 import 'package:unisba_sisfo/menus/main_menu.dart';
 import 'package:unisba_sisfo/models/sisfo_menu.dart';
 import 'package:unisba_sisfo/pages/login.dart';
+import 'package:unisba_sisfo/pages/webview.dart';
 import '../models/active_user.dart';
 import '../models/slider.dart';
 
@@ -27,7 +28,10 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = true;
 
   List<SisfoMenu> sisfoMenu = [
-    SisfoMenu(title: "SIBIMA", icon: cs.iconSibima, route: '#'),
+    SisfoMenu(
+        title: "SIBIMA",
+        icon: cs.iconSibima,
+        route: 'https://sibima.unisba.ac.id'),
     SisfoMenu(
         title: "SIAKAD",
         icon: cs.iconSiakad,
@@ -115,6 +119,17 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  void openWebView(String title, String url) {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.rightToLeft,
+            child: WebViewPage(
+              title: title,
+              url: url,
+            )));
   }
 
   Future<void> getSliders() async {
@@ -257,7 +272,9 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () => {Fluttertoast.showToast(msg: title)},
+          onTap: () => {
+            openWebView(title, route),
+          },
           child: Image.asset(
             icon,
             width: deviceWidth * 0.15,
