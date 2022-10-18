@@ -16,4 +16,5 @@ const String iconSiakad = "assets/icons/menu_siakad.png";
 const String iconSidpp = "assets/icons/menu_sidpp.png";
 const String iconToefl = "assets/icons/menu_toefl.png";
 
-const String sliderUrl = "https://www.unisba.ac.id/wp-json/wp/v2/posts";
+const String sliderUrl =
+    "https://www.unisba.ac.id/wp-json/wp/v2/posts?per_page=5";
