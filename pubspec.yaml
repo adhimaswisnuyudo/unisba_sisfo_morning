@@ -19,6 +19,8 @@ dependencies:
   circular_bottom_navigation: ^2.2.0
   persistent_bottom_nav_bar: any
   carousel_slider: ^4.1.1
+  badges: ^2.0.3
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:

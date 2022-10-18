@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +12,7 @@ import 'package:unisba_sisfo/menus/main_menu.dart';
 import 'package:unisba_sisfo/models/sisfo_menu.dart';
 import 'package:unisba_sisfo/pages/login.dart';
 import '../models/active_user.dart';
+import '../models/slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -56,6 +58,8 @@ class _HomePageState extends State<HomePage> {
         route: 'https://sibima.unisba.ac.id'),
   ];
 
+  List<SisfoSlider> sliderList = [];
+
   @override
   void initState() {
     getActiveUser();
@@ -73,20 +77,50 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(cs.spActiveUser);
-    prefs.remove(cs.spTokenKey);
-    prefs.remove(cs.spIsLogin);
-    Navigator.pushReplacement(
-        context,
-        PageTransition(
-            child: LoginPage(), type: PageTransitionType.bottomToTop));
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout Sisfo'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Are you sure to logout?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove(cs.spActiveUser);
+                prefs.remove(cs.spIsLogin);
+                prefs.remove(cs.spTokenKey);
+                Navigator.pushReplacement(
+                    context,
+                    PageTransition(
+                        child: LoginPage(),
+                        type: PageTransitionType.bottomToTop));
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future<void> getSliders() async {
     Dio dio = Dio();
     var response = await dio.get(cs.sliderUrl);
-    print(response.data.length);
+    for (var i in response.data) {}
   }
 
   @override
@@ -98,9 +132,16 @@ class _HomePageState extends State<HomePage> {
           leading: Image.asset(cs.mainLogo, height: 50),
           title: Text(cs.appName),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications),
+            Align(
+              child: Badge(
+                position: BadgePosition.topEnd(top: 1, end: 2),
+                badgeContent: const Text(
+                  '0',
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: IconButton(
+                    icon: const Icon(Icons.notifications), onPressed: () {}),
+              ),
             ),
             IconButton(
               onPressed: () {
