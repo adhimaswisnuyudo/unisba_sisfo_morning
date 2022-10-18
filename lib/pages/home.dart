@@ -140,16 +140,20 @@ class _HomePageState extends State<HomePage> {
     });
     Dio dio = Dio();
     var response = await dio.get(cs.sliderUrl);
-    for (var i in response.data) {
-      sliderList.add(SisfoSlider(
-        id: i['id'].toString(),
-        title: i['title']['rendered'],
-        image: i['jetpack_featured_media_url'],
-        link: i['link'],
-      ));
+    if (response.statusCode == 200) {
       setState(() {
+        for (var i in response.data) {
+          sliderList.add(SisfoSlider(
+            id: i['id'].toString(),
+            title: i['title']['rendered'],
+            image: i['jetpack_featured_media_url'],
+            link: i['link'],
+          ));
+        }
         isLoading = false;
       });
+    } else {
+      Fluttertoast.showToast(msg: "Unable to load news");
     }
   }
 
@@ -278,9 +282,7 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           Container(
                                             height: deviceHeight * 0.1,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
+                                            width: deviceWidth,
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 5.0),
                                             decoration: BoxDecoration(
@@ -316,6 +318,7 @@ class _HomePageState extends State<HomePage> {
                                             child: Text(
                                               i.title,
                                               textAlign: TextAlign.center,
+                                              maxLines: 2,
                                             ),
                                           )
                                         ],
