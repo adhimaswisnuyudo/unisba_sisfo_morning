@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -135,7 +136,14 @@ class _HomePageState extends State<HomePage> {
   Future<void> getSliders() async {
     Dio dio = Dio();
     var response = await dio.get(cs.sliderUrl);
-    for (var i in response.data) {}
+    for (var i in response.data) {
+      sliderList.add(SisfoSlider(
+        id: i['id'].toString(),
+        title: i['title']['rendered'],
+        image: i['jetpack_featured_media_url'],
+        link: i['link'],
+      ));
+    }
   }
 
   @override
@@ -242,7 +250,46 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () => {getSliders()},
                       )))
                 ],
-              )
+              ),
+              Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  height: deviceHeight * 0.165,
+                  child: CarouselSlider(
+                    options: CarouselOptions(height: 400.0),
+                    items: sliderList.map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Card(
+                            child: InkWell(
+                                onTap: () => {openWebView(i.title, i.link)},
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: deviceHeight * 0.1,
+                                      width: MediaQuery.of(context).size.width,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.0),
+                                      decoration:
+                                          BoxDecoration(color: Colors.white),
+                                      child: Image.network(
+                                        i.image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(
+                                        i.title,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  )),
             ],
           ),
           Positioned(
