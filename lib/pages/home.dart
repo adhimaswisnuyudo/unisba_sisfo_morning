@@ -13,6 +13,7 @@ import 'package:unisba_sisfo/handlers/screen.dart';
 import 'package:unisba_sisfo/menus/main_menu.dart';
 import 'package:unisba_sisfo/models/sisfo_menu.dart';
 import 'package:unisba_sisfo/pages/login.dart';
+import 'package:unisba_sisfo/pages/postmore.dart';
 import 'package:unisba_sisfo/pages/webview.dart';
 import '../models/active_user.dart';
 import '../models/slider.dart';
@@ -258,7 +259,13 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                           ),
                         ),
-                        onPressed: () => {getSliders()},
+                        onPressed: () => {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: PostMorePage(),
+                                  type: PageTransitionType.bottomToTop))
+                        },
                       )))
                 ],
               ),
