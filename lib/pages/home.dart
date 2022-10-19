@@ -303,6 +303,7 @@ class _HomePageState extends State<HomePage> {
                                                       ImageChunkEvent?
                                                           loadingProgress) {
                                                 if (loadingProgress == null)
+                                                  // ignore: curly_braces_in_flow_control_structures
                                                   return child;
                                                 return Center(
                                                   child:

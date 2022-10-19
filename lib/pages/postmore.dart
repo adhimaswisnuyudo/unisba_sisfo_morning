@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:unisba_sisfo/config/constanta.dart' as cs;
 
 import '../models/slider.dart';
@@ -14,21 +13,8 @@ class PostMorePage extends StatefulWidget {
 class _PostMorePageState extends State<PostMorePage> {
   bool isLoading = true;
   List<SisfoSlider> sliderList = [];
-  // ignore: prefer_final_fields
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
-  void _onRefresh() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    getSliders();
-    _refreshController.loadComplete();
-  }
-
+  @override
   void initState() {
     getSliders();
     super.initState();
@@ -64,36 +50,29 @@ class _PostMorePageState extends State<PostMorePage> {
       appBar: AppBar(
         title: isLoading ? Text('Please Wait...') : Text("Unisba Posts"),
       ),
-      body: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(),
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: ListView.builder(
-            itemCount: sliderList.length,
-            itemBuilder: (BuildContext context, int i) {
-              return ListTile(
-                  leading: Image.network(
-                    sliderList[i].image,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
-                  title: Text(sliderList[i].title));
-            }),
-      ),
+      body: ListView.builder(
+          itemCount: sliderList.length,
+          itemBuilder: (BuildContext context, int i) {
+            return ListTile(
+              leading: Image.network(
+                sliderList[i].image,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+              ),
+              title: Text(sliderList[i].title),
+            );
+          }),
     );
   }
 }

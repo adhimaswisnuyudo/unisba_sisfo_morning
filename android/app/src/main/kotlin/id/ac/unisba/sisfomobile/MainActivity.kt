@@ -1,4 +1,4 @@
-package com.example.unisba_sisfo
+package id.ac.unisba.sisfomobile
 
 import io.flutter.embedding.android.FlutterActivity
 

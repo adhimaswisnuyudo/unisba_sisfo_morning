@@ -1,10 +1,8 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
-
-import '../pages/login.dart';
+import 'package:unisba_sisfo/pages/update_profile.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -32,6 +30,16 @@ class _MainMenuState extends State<MainMenu> {
     _navigationController = CircularBottomNavigationController(selectedPos);
   }
 
+  redirectPage(int selectedPos) {
+    if (selectedPos == 4) {
+      Navigator.push(
+          context,
+          PageTransition(
+              child: UpdateProfilePage(),
+              type: PageTransitionType.bottomToTop));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CircularBottomNavigation(
@@ -41,6 +49,7 @@ class _MainMenuState extends State<MainMenu> {
       selectedCallback: (int? selectedPos) {
         setState(() {
           this.selectedPos = selectedPos!;
+          redirectPage(selectedPos);
         });
       },
     );
